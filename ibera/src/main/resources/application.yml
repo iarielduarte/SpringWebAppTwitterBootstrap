@@ -1,0 +1,3 @@
+# Banner file location.
+banner:
+      location: classpath:/banners/myapp.txt 
