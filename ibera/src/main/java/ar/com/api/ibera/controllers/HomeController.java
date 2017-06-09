@@ -3,6 +3,8 @@ package ar.com.api.ibera.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,8 @@ import ar.com.api.ibera.models.Customer;
 @RequestMapping("/home")
 public class HomeController {
 
+	private static final Log LOGGER = LogFactory.getLog(HomeController.class);
+	
 	public static final String HOME_VIEW = "home";
 	public static final String ERROR_404 = "404";
 	public static final String ERROR_500 = "500";
@@ -73,8 +77,9 @@ public class HomeController {
 	@PostMapping("/customer/add")
 	public RedirectView addNewCustomer(@ModelAttribute("customer") Customer customer){
 		customersList.add(customer);
-		int i = 6 / 0;
+		//int i = 6 / 0;
 		//return "redirect:/home/customer";
+		LOGGER.info("Se agrego un nuevo cliente a la lista : " + customer.toString());
 		return new RedirectView("/home/customer");
 	}
 	
