@@ -5,10 +5,20 @@
 <title>Home</title>
 </head>
 <body>
-<h1>Welcome to web application.</h1>
-<p>Customers</p>
+<p>Agregar Cliente</p>
 <hr />
-<p th:text="${customer.name}">.</p>
+<form action="#" th:action="@{/home/customer/add}" th:object="${customer}" method="post">
+	<p>Nombre: <input type="text" th:field="*{name}"/></p>
+	<p>Email: <input type="text" th:field="*{email}"/></p>
+	<p><input type="submit" value="Guardar"/></p>
+</form>
+<br />
+<p>List de Clientes</p>
+<hr />
+<ul th:each="customer : ${customers}">
+	<li th:text="${customer.name}"></li>
+</ul>
+
 <br />
 <pre th:text="${copyr}">.</pre>
 </body>
