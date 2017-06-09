@@ -22,6 +22,8 @@ import ar.com.api.ibera.models.Customer;
 public class HomeController {
 
 	public static final String HOME_VIEW = "home";
+	public static final String ERROR_404 = "404";
+	public static final String ERROR_500 = "500";
 	public List<Customer> customersList = new ArrayList<Customer>();
 	
 	/*Forma de llamar a la vista con get @GetMapping*/
@@ -71,6 +73,7 @@ public class HomeController {
 	@PostMapping("/customer/add")
 	public RedirectView addNewCustomer(@ModelAttribute("customer") Customer customer){
 		customersList.add(customer);
+		int i = 6 / 0;
 		//return "redirect:/home/customer";
 		return new RedirectView("/home/customer");
 	}
