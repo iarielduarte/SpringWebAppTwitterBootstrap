@@ -5,14 +5,8 @@
 <title>Home</title>
 </head>
 <body>
-<p>Agregar Cliente</p>
+<a href="addcustomer">Agregar Cliente</a>
 <hr />
-<form action="#" th:action="@{/home/customer/add}" th:object="${customer}" method="post">
-	<p>Nombre: <input type="text" th:field="*{name}"/></p>
-	<p>Email: <input type="text" th:field="*{email}"/></p>
-	<p><input type="submit" value="Guardar"/></p>
-</form>
-<br />
 <p>List de Clientes</p>
 <hr />
 <ul th:each="customer : ${customers}">

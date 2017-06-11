@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<title>Home</title>
+</head>
+<body>
+<p>Nuevo Cliente</p>
+<hr />
+<form action="#" th:action="@{/home/customer/add}" th:object="${customer}" method="post">
+	<p>Nombre: <input type="text" th:field="*{name}"/></p>
+	<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Nombre con errores!</p>
+	<p>Email: <input type="text" th:field="*{email}"/></p>
+	<p><input type="submit" value="Guardar"/></p>
+</form>
+<br />
+
+<br />
+<pre th:text="${copyr}">.</pre>
+</body>
+</html>
