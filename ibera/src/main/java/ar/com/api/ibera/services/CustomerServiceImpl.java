@@ -37,5 +37,10 @@ public class CustomerServiceImpl implements CustomerService{
 		return customerRepository.findAll();
 	}
 
+	@Override
+	public Customer findCustomerById(Integer id) {
+		return customerRepository.findById(id);
+	}
+
 
 }

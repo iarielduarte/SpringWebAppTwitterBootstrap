@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import ar.com.api.ibera.constants.ViewConstant;
@@ -38,22 +39,26 @@ public class CustomerController {
 	
 	@GetMapping("/list")
 	public String callCustomersPage(Model model){
-		model.addAttribute("customer", customerService.getCustomers());
+		model.addAttribute("customers", customerService.getCustomers());
 		return ViewConstant.CUSTOMER_VIEW;
 	}
 	
-	/*Forma de llamar a la vista con get @GetMapping*/
 	@GetMapping("/addcustomer")
-	public String calladdPage(Model model){
+	public String callAddPage(Model model){
+		model.addAttribute("edit", false);
 		model.addAttribute("customer", new Customer());
 		return ViewConstant.ADD_CUSTOMER_VIEW;
 	}
 	
-	/*
-	 * Metodo Post para agregar un nuevo registro
-	 * url: /customer/add
-	 * body {Customer}
-	 */
+	@GetMapping("/editcustomer")
+	public String callEditPage(@RequestParam(name="id", required=true) Integer id, Model model){
+		Customer c = customerService.findCustomerById(id);
+		model.addAttribute("customer", c);
+		model.addAttribute("edit", true);
+		return ViewConstant.ADD_CUSTOMER_VIEW;
+	}
+	
+	
 	@PostMapping("/add")
 	public ModelAndView addNewCustomer(@Valid @ModelAttribute("customer") Customer customer, BindingResult bindingResult){
 		ModelAndView mv = new ModelAndView();
@@ -61,12 +66,32 @@ public class CustomerController {
 			LOGGER.error("No se puede agregar hay errores!");
 			mv.setViewName(ViewConstant.ADD_CUSTOMER_VIEW);
 		}else{
+			if(customerService.saveCustomer(customer) != null){
+				mv.addObject("customers", customerService.getCustomers());
+				mv.addObject("result", 1);
+				mv.setViewName(ViewConstant.CUSTOMER_VIEW);
+				LOGGER.info("Customer has been saved!");
+			}else{
+				mv.addObject("result", 0);
+				mv.setViewName(ViewConstant.CUSTOMER_VIEW);
+				LOGGER.error("Customer hasn't been saved!");
+			}
 			
-			mv.addObject("customers", customerService.getCustomers());
-			mv.setViewName(ViewConstant.CUSTOMER_VIEW);
-			LOGGER.info("Se agrego un nuevo cliente a la lista : " + customer.toString());
 		}
 		
+		return mv;
+	}
+	
+	@GetMapping("/remove")
+	public ModelAndView removeCustomer(@RequestParam(name="id", required=true) Integer id){
+		ModelAndView mv = new ModelAndView(ViewConstant.CUSTOMER_VIEW);
+		if(id != null){
+			Customer c = customerService.findCustomerById(id);
+			LOGGER.info("Customer has been removed : " + c.toString());
+			customerService.removeCustomer(c);
+			mv.addObject("customers", customerService.getCustomers());
+			mv.addObject("result", 3);
+		}
 		return mv;
 	}
 	

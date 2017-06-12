@@ -10,4 +10,6 @@ import ar.com.api.ibera.models.Customer;
 @Repository("customerRepository")
 public interface CustomerRepository extends JpaRepository<Customer, Serializable>{
 
+	public abstract Customer findById(Integer id);
+	
 }

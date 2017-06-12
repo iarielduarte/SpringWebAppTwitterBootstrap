@@ -13,7 +13,7 @@
   </head>
   <body>
 	<div class="container">
-		<h2>Customers</h2>
+		<h2>Clientes</h2>
 		<br/>
 		<div class="row">
 			<div class="col-xs-6">
@@ -26,6 +26,10 @@
 			</div>
 			<div class="col-xs-6"></div>
 		</div>
+		<div th:if="${result == 1}" class="alert alert-success" role="alert">Guardado con éxito.</div>
+		<div th:if="${result == 0}" class="alert alert-danger" role="alert">Error al guardar el nuevo cliente.</div>
+		<div th:if="${result == 3}" class="alert alert-success" role="alert">Cliente borrado con éxito.</div>
+		<br/>
 		<table class="table table-hover table-striped table-bordered">
 			<thead>
 				<tr>
@@ -48,8 +52,8 @@
 					<td th:text="${customer.phone}"></td>
 					<td th:text="${customer.celphone}"></td>
 					<td>
-						<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
-						<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+						<a href="#" th:href="@{/customer/editcustomer?id=__${customer.id}__}" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
+						<a href="#" th:href="@{/customer/remove?id=__${customer.id}__}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
 					</td>
 				</tr>
 			</tbody>

@@ -46,7 +46,7 @@ public class LoginController {
 		LOGGER.info("METHOD: loginCheck() -- PARAMS USER:" + uc.toString());
 		if(uc.getUsername().equals("user") && uc.getPassword().equals("user")){
 			model.addAttribute("customers", customerService.getCustomers());
-			return ViewConstant.CUSTOMER_VIEW;
+			return "redirect:/customer/list";
 		}
 		LOGGER.info("METHOD: redirect login with error");
 		return "redirect:/login?error";

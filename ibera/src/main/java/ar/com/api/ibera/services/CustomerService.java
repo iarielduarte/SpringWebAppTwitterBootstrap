@@ -9,4 +9,5 @@ public interface CustomerService {
 	public abstract Customer removeCustomer(Customer customer);
 	public abstract Customer updateCustomer(Customer customer);
 	public abstract List<Customer> getCustomers();
+	public abstract Customer findCustomerById(Integer id);
 }

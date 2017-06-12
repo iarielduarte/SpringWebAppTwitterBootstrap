@@ -25,33 +25,37 @@
 				</div>
 				<div class="col-xs-6"></div>
 			</div>
+			<div class="form-group" th:if="${edit == true}">
+				<label for="id">Id</label> 
+				<input id="id" class="form-control" type="text" th:field="*{id}" th:value="${id}"/>
+			</div>
 			<div class="form-group">
 				<label for="dni">DNI*</label> 
-				<input id="dni" class="form-control" type="text" placeholder="Ingrese el DNI" th:field="*{dni}"/>
+				<input id="dni" class="form-control" type="text" placeholder="Ingrese el DNI" th:field="*{dni}" th:value="${dni}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Nombre*</label> 
-				<input id="dni"	class="form-control" type="text" placeholder="Ingrese el nombre del cliente" th:field="*{name}"/>
+				<input id="dni"	class="form-control" type="text" placeholder="Ingrese el nombre del cliente" th:field="*{name}" th:value="${name}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Ciudad*</label> 
-				<input id="dni" class="form-control" type="text" placeholder="Ingrese el nombre del ciudad" th:field="*{city}"/>
+				<input id="dni" class="form-control" type="text" placeholder="Ingrese el nombre del ciudad" th:field="*{city}" th:value="${city}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Provincia*</label> 
-				<input id="dni" class="form-control" type="text" placeholder="Ingrese la provincia"	th:field="*{province}"/>
+				<input id="dni" class="form-control" type="text" placeholder="Ingrese la provincia"	th:field="*{province}" th:value="${province}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Dirección*</label> 
-				<input id="dni" class="form-control" type="text" placeholder="Ingrese la dirección"	th:field="*{address}"/>
+				<input id="dni" class="form-control" type="text" placeholder="Ingrese la dirección"	th:field="*{address}" th:value="${address}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Telefono*</label> 
-				<input id="dni" class="form-control" type="text" placeholder="Ingrese el numero de telefono" th:field="*{phone}"/>
+				<input id="dni" class="form-control" type="text" placeholder="Ingrese el numero de telefono" th:field="*{phone}" th:value="${phone}"/>
 			</div>
 			<div class="form-group">
 				<label for="dni">Celular*</label> 
-				<input id="dni"	class="form-control" type="text" placeholder="Ingrese el numero de celular" th:field="*{celphone}"/>
+				<input id="dni"	class="form-control" type="text" placeholder="Ingrese el numero de celular" th:field="*{celphone}" th:value="${celphone}"/>
 			</div>
 		</form>
 	</div>
