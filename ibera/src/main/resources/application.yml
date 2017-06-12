@@ -5,7 +5,7 @@ banner:
 # Mysql configuration
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/iberadb
+    url: jdbc:mysql://localhost:3306/iberadb?useSSL=false
     username: root
     password: masterin
   jpa:

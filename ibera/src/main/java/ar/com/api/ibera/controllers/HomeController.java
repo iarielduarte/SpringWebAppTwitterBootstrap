@@ -89,7 +89,7 @@ public class HomeController {
 	public List<Customer> getCustomers(){
 		List<Customer> c = new ArrayList<>();
 		
-		for (Customer customer : customerService.getCustomersList()) {
+		for (Customer customer : customerService.getCustomers()) {
 			c.add(customer);
 		}
 		for (Customer customer : customersList) {

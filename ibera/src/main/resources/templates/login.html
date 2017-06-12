@@ -1,36 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
 
-<head>
+    <title>Login</title>
 
-  <meta charset="UTF-8">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
 
-  <title>Acceso</title>
+    <!-- Custom styles for this template -->
+    <link href="#" th:href="@{/css/login.css}" rel="stylesheet" />
+    <link href="#" th:href="@{/css/style.css}" rel="stylesheet" />
 
-  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+  </head>
 
-    <link rel="stylesheet" href="../static/css/style.css" media="screen" type="text/css" />
+  <body>
 
-</head>
+    <div class="container">
+      <form class="form-signin" action="#" th:action="@{/logincheck}" th:object="${userCredentials}" method="post">
+        <h2 class="form-signin-heading">Inicio de Sesión</h2>
+        <label for="usuario" class="sr-only">Usuario</label>
+        <input type="text" id="inputUsername" class="form-control" placeholder="Username" th:field="*{username}"/>
+        <label for="pass" class="sr-only">Contraseña</label>
+        <input type="password" id="pass" class="form-control" placeholder="Contraseña" th:field="*{password}"/>
+        <div th:if="${error != null}" class="alert alert-danger" role="alert">Usuario o contraseña invalida.</div>
+        <div th:if="${logout != null}" class="alert alert-info" role="alert">Sesión finalizada con éxito.</div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">
+        	<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Iniciar Sesión
+        </button>
+      </form>
 
-<body>
-
-
-  <div class="login-card">
-    <h1>Acceso <img class="candado"  src="../static/imgs/candado.png"></h1><br>
-     
-  <form>
-    <input type="text" name="user" placeholder="Username">
-    <input type="password" name="pass" placeholder="Password">
-    <input type="submit" name="login" class="login login-submit" value="Acceder">
-  </form>
-
-  <div class="login-help">
-    <a href="#">Forgot Password</a>
-  </div>
-</div>
-
+    </div> <!-- /container -->
 
 </body>
-
 </html>

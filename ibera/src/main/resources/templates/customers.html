@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8"/>
+
+    <title>Customers</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <!-- Custom styles for this template -->
+    <link href="#" th:href="@{/css/style.css}" rel="stylesheet" />
+ 	<link href="#" th:href="@{/css/contacts.css}" rel="stylesheet" />
+  </head>
+  <body>
+	<div class="container">
+		<h2>Customers</h2>
+		<br/>
+		<div class="row">
+			<div class="col-xs-6">
+			<a class="btn btn-primary pull-left" href="#" th:href="@{/customer/addcustomer}">
+				<span class="glyphicon glyphicon-user"></span> Nuevo Cliente
+			</a>
+			<a class="btn btn-primary pull-left" href="#" th:href="@{/login?logout}">
+				<span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión
+			</a>
+			</div>
+			<div class="col-xs-6"></div>
+		</div>
+		<table class="table table-hover table-striped table-bordered">
+			<thead>
+				<tr>
+					<th>DNI</th>
+					<th>Nombre</th>
+					<th>Ciudad</th>
+					<th>Dirección</th>
+					<th>Telefono</th>
+					<th>Celular</th>
+					<th>Operaciones</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="customer : ${customers}">
+					<td th:text="${customer.dni}"></td>
+					<td th:text="${customer.name}"></td>
+					<td th:text="${customer.city}"></td>
+					<td th:text="${customer.address}"></td>
+					<td th:text="${customer.phone}"></td>
+					<td th:text="${customer.celphone}"></td>
+					<td>
+						<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-pencil"></span></a>
+						<a href="#" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+
+</body>
+</html>
