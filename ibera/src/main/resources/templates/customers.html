@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
     <!-- Custom styles for this template -->
     <link href="#" th:href="@{/css/style.css}" rel="stylesheet" />
- 	<link href="#" th:href="@{/css/contacts.css}" rel="stylesheet" />
   </head>
   <body>
 	<div class="container">
@@ -20,9 +19,11 @@
 			<a class="btn btn-primary pull-left" href="#" th:href="@{/customer/addcustomer}">
 				<span class="glyphicon glyphicon-user"></span> Nuevo Cliente
 			</a>
-			<a class="btn btn-primary pull-left" href="#" th:href="@{/login?logout}">
-				<span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión
-			</a>
+			<form th:action="@{/logout}" method="POST">
+				<button class="btn btn-primary pull-left" type="submit">
+					<span class="glyphicon glyphicon-log-out"></span> Cerrar Sesión
+				</button>
+			</form>
 			</div>
 			<div class="col-xs-6"></div>
 		</div>

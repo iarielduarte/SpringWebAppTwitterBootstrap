@@ -17,16 +17,17 @@
   <body>
 
     <div class="container">
-      <form class="form-signin" action="#" th:action="@{/logincheck}" th:object="${userCredentials}" method="post">
+      <form class="form-signin" th:action="@{/logincheck}" method="POST">
+      	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <h2 class="form-signin-heading">Inicio de Sesión</h2>
-        <label for="usuario" class="sr-only">Usuario</label>
-        <input type="text" id="inputUsername" class="form-control" placeholder="Username" th:field="*{username}"/>
-        <label for="pass" class="sr-only">Contraseña</label>
-        <input type="password" id="pass" class="form-control" placeholder="Contraseña" th:field="*{password}"/>
+        <label for="inputusuario" class="sr-only">Usuario</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" id="username"/>
+        <label for="inputpassword" class="sr-only">Contraseña</label>
+        <input type="password" class="form-control" placeholder="Contraseña" name="password" id="password"/>
         <div th:if="${error != null}" class="alert alert-danger" role="alert">Usuario o contraseña invalida.</div>
         <div th:if="${logout != null}" class="alert alert-info" role="alert">Sesión finalizada con éxito.</div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">
-        	<span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Iniciar Sesión
+        	<span class="glyphicon glyphicon-log-in"></span> Iniciar Sesión
         </button>
       </form>
 
