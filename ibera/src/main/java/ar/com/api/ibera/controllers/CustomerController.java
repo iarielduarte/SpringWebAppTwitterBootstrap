@@ -42,7 +42,6 @@ public class CustomerController {
 	
 	@GetMapping("/list")
 	public String callCustomersPage(Model model){
-		
 		User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		model.addAttribute("username", user.getUsername());
 		model.addAttribute("customers", customerService.getCustomers());

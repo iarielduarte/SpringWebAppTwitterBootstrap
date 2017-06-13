@@ -4,6 +4,8 @@ banner:
        
 # Mysql configuration
 spring:
+  thymeleaf:
+    cache: false
   datasource:
     url: jdbc:mysql://localhost:3306/iberadb?useSSL=false
     username: root

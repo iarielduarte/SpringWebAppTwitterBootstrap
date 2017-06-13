@@ -55,7 +55,7 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter{
 		if(auth != null && auth.isAuthenticated()){
 			username = auth.getName();
 			ar.com.api.ibera.models.Log log = new ar.com.api.ibera.models.Log(new Date(), auth.getDetails().toString(), username, url);
-			logRepository.save(log);
+			//logRepository.save(log);
 		}
 		
 		LOG.info("--REQUEST URL : '"+ url + "' -- TOTAL TIME : '" + (System.currentTimeMillis() - startTime) + "'MS");
