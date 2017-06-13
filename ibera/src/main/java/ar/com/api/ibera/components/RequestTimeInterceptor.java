@@ -17,15 +17,24 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import ar.com.api.ibera.repositories.LogRepository;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RequestTimeInterceptor.
+ */
 @Component("requestTimeInterceptor")
 public class RequestTimeInterceptor extends HandlerInterceptorAdapter{
 
+	/** The Constant LOG. */
 	private static final Log LOG = LogFactory.getLog(RequestTimeInterceptor.class);
 	
+	/** The log repository. */
 	@Autowired
 	@Qualifier("logRepository")
 	private LogRepository logRepository;
 	
+	/* (non-Javadoc)
+	 * @see org.springframework.web.servlet.handler.HandlerInterceptorAdapter#preHandle(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object)
+	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -33,6 +42,9 @@ public class RequestTimeInterceptor extends HandlerInterceptorAdapter{
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.springframework.web.servlet.handler.HandlerInterceptorAdapter#afterCompletion(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, java.lang.Object, java.lang.Exception)
+	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
