@@ -1,0 +1,13 @@
+spring:
+  thymeleaf:
+    cache: false
+  data:
+    mongodb:
+      uri: mongodb://secret-inlet-38373:secret-inlet-38373@ds127892.mlab.com:27892/heroku_ldb2ffxr
+    rest:
+      base-path: /api
+        
+
+        
+         
+        
