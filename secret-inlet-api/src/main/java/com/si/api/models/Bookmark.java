@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(collection="bookmarks")
+@org.springframework.data.mongodb.core.mapping.Document(collection = "bookmarks")
+@org.springframework.data.elasticsearch.annotations.Document(indexName="bookmarks", type="bookmarks", shards=5)
 public class Bookmark {
 
 	@Id
-	private String id;
+	private String bookmarkId;
 	private String name;
 	private String author;
 	private String description;

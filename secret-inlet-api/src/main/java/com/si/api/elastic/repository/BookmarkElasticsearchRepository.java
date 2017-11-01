@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-import com.si.api.elastic.model.Bookmark;
+import com.si.api.models.Bookmark;
 
-public interface BookmarkElasticsearchRepository extends ElasticsearchRepository<Bookmark, Long>{
+public interface BookmarkElasticsearchRepository extends ElasticsearchRepository<Bookmark, String>{
 	
 	List<Bookmark> findByName(String text);
 	

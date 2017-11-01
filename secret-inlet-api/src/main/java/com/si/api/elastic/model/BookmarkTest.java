@@ -22,8 +22,8 @@ import com.si.api.models.Tags;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Document(indexName="bookmarks", type="bookmarks", shards=1	)
-public class Bookmark {
+@Document(indexName="bookmarks", type="bookmarks", shards=5	)
+public class BookmarkTest {
 
 	private Long id;
 	private String name;

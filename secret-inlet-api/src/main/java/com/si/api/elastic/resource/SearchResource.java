@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.si.api.elastic.model.Bookmark;
 import com.si.api.elastic.repository.BookmarkElasticsearchRepository;
+import com.si.api.models.Bookmark;
 
 @RestController
 @RequestMapping("/rest/search")

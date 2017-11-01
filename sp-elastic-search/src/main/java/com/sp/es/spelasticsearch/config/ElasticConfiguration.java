@@ -44,7 +44,7 @@ public class ElasticConfiguration {
 	 * Configuration with a Node Builder 
 	 */
 	/*
-	 @Bean
+	@Bean
     public NodeBuilder nodeBuilder() {
         return new NodeBuilder();
 	}

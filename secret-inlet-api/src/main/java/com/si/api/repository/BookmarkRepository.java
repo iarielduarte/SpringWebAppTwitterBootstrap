@@ -1,4 +1,5 @@
-package com.si.api.repositories;
+package com.si.api.repository;
+
 
 import java.io.Serializable;
 
@@ -18,7 +19,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.si.api.models.Bookmark;
 
-@RepositoryRestResource(collectionResourceRel = "bookmarks", path = "bookmarks")
+@RepositoryRestResource
 public interface BookmarkRepository extends CrudRepository<Bookmark, Serializable> {
 
 	/**
