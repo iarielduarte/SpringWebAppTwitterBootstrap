@@ -51,8 +51,8 @@ public class SearchResource {
 		return searchQueryBuilder.getByText(text);
 	}
 	
-	@GetMapping(value="/outlet", produces = MediaType.APPLICATION_JSON_VALUE)
-	public @ResponseBody ResponseEntity<?> getArticlesByOutlet(Pageable p){
+	@GetMapping(value="/outlet/{outlet}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<?> getArticlesByOutlet(@PathVariable final String outlet, Pageable p){
 		int realPage = 0;
 		if (p.getPageNumber() > 0) {
             realPage = p.getPageNumber() - 1;
@@ -63,7 +63,7 @@ public class SearchResource {
         }
         Pageable pageRequest = new PageRequest(realPage, size);
 		Map<String, Object> map = Maps.newHashMap();
-		List<Article> articlesList = searchQueryBuilder.getByOutlet("Twitter", pageRequest);
+		List<Article> articlesList = searchQueryBuilder.getByOutlet(outlet, pageRequest);
 		SearchResultArticle sra = new SearchResultArticle(articlesList.size(),size,realPage);
 		map.put("SearchResultArticle", sra);
 		map.put("Articles", articlesList);
