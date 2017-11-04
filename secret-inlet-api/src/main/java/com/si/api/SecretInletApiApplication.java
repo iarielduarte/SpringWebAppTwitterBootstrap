@@ -7,7 +7,7 @@ import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;
 
-import com.si.api.models.Bookmark;
+import com.si.api.models.Article;
 
 @SpringBootApplication
 public class SecretInletApiApplication {
@@ -26,7 +26,7 @@ public class SecretInletApiApplication {
         return new RepositoryRestConfigurerAdapter() {
             @Override
             public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-                config.exposeIdsFor(Bookmark.class);
+                config.exposeIdsFor(Article.class);
             }
         };
 	}

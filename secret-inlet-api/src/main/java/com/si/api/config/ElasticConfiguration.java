@@ -49,7 +49,7 @@ public class ElasticConfiguration {
 	 * Example to ElasticsearchTemplate of local file node
 	 */
 	
-	 @Bean
+	@Bean
     public NodeBuilder nodeBuilder() {
         return new NodeBuilder();
 	}

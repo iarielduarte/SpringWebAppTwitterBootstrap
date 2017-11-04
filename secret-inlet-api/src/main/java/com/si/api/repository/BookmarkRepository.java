@@ -17,10 +17,10 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import com.si.api.models.Bookmark;
+import com.si.api.models.Article;
 
 @RepositoryRestResource
-public interface BookmarkRepository extends CrudRepository<Bookmark, Serializable> {
+public interface BookmarkRepository extends CrudRepository<Article, Serializable> {
 
 	/**
 	 * URL /bookmarks/search/findByType?type=Blog
@@ -28,7 +28,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Serializabl
 	 * @return
 	 */
 	@Query(value = "{ type : ?0 }")
-	List<Bookmark> findByType(@Param("type") String type);
+	List<Article> findByType(@Param("type") String type);
 	
 	/**
 	 * URL /bookmarks/search/findByAuthor?author=a
@@ -36,7 +36,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Serializabl
 	 * @return
 	 */
 	@Query("{ author : { $regex : ?0, $options: 'i'}}")
-	List<Bookmark> findByAuthor(@Param("author") String author);
+	List<Article> findByAuthor(@Param("author") String author);
 	
 	/**
 	 * URL /bookmarks/search/findByName?name=Routing
@@ -44,7 +44,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Serializabl
 	 * @return
 	 */
 	@Query("{ name : { $regex : ?0, $options: 'i'}}")
-	List<Bookmark> findByName(@Param("name") String name);
+	List<Article> findByName(@Param("name") String name);
 	
 	/**
 	 * URL /bookmarks/search/findBySearches?name=Routing&type=Blog&author=&page=0&size=1
@@ -55,7 +55,7 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Serializabl
 	 * @return
 	 */
 	@Query("{$or:[ { name : {$regex: ?0 }},{ type : {$regex: ?1 }},{ author : {$regex: ?2 }} ]}")
-	Page<Bookmark> findByFilters (@Param("name") String name, @Param("type") String type, @Param("author") String author, Pageable pageRequest);
+	Page<Article> findByFilters (@Param("name") String name, @Param("type") String type, @Param("author") String author, Pageable pageRequest);
 	
 	/**
 	 * URL /bookmarks/search/findBySearches?term=&page=1&size=10
@@ -64,6 +64,6 @@ public interface BookmarkRepository extends CrudRepository<Bookmark, Serializabl
 	 * @return
 	 */
 	@Query(value = "{$or:[ { 'name' : {$regex: ?0, $options:'i' }},{ 'type' : {$regex: ?0, $options:'i' }},{ 'author' : {$regex: ?0, $options:'i' }} ]}")
-	Page<Bookmark> findBySearches(@Param("term") String term, Pageable pageRequest);
+	Page<Article> findBySearches(@Param("term") String term, Pageable pageRequest);
 	
 }

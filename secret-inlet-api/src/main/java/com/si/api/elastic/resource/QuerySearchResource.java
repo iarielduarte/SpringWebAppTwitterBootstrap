@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.si.api.elastic.builder.SearchQueryBuilder;
-import com.si.api.models.Bookmark;
+import com.si.api.models.Article;
 
 @RestController
 @RequestMapping("/rest/search/query")
@@ -20,7 +20,7 @@ public class QuerySearchResource {
 	private SearchQueryBuilder searchQueryBuilder;
 	
 	@GetMapping(value="/{text}")
-	public List<Bookmark> searchByText(@PathVariable final String text){
+	public List<Article> searchByText(@PathVariable final String text){
 		return searchQueryBuilder.getAll(text);
 	}
 	

@@ -19,7 +19,7 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @org.springframework.data.mongodb.core.mapping.Document(collection = "bookmarks")
 @org.springframework.data.elasticsearch.annotations.Document(indexName="bookmarks", type="bookmarks", shards=5)
-public class Bookmark {
+public class Article {
 
 	@Id
 	private String bookmarkId;

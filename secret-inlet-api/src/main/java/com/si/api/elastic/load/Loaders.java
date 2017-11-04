@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.si.api.elastic.repository.BookmarkElasticsearchRepository;
-import com.si.api.models.Bookmark;
+import com.si.api.models.Article;
 import com.si.api.repository.BookmarkRepository;
 
 @Component
@@ -29,15 +29,15 @@ public class Loaders {
 	@PostConstruct
 	@Transactional
 	public void loadAll(){
-		operations.putMapping(Bookmark.class);
+		operations.putMapping(Article.class);
 		System.out.println("Loading data");
 		elaticRepository.save(getData());
 		System.out.println("Loading completed");
 	}
 	
-	private List<Bookmark> getData() {
-		List<Bookmark> bookmarks = new ArrayList<Bookmark>();
-		Iterable<Bookmark> ibookmarks = mongoRepository.findAll();
+	private List<Article> getData() {
+		List<Article> bookmarks = new ArrayList<Article>();
+		Iterable<Article> ibookmarks = mongoRepository.findAll();
 		
 		ibookmarks.forEach(bookmarks::add);
 		return bookmarks;

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-import com.si.api.models.Bookmark;
+import com.si.api.models.Article;
 
-public interface BookmarkElasticsearchRepository extends ElasticsearchRepository<Bookmark, String>{
+public interface BookmarkElasticsearchRepository extends ElasticsearchRepository<Article, String>{
 	
-	List<Bookmark> findByName(String text);
+	List<Article> findByName(String text);
 	
-	List<Bookmark> findByAuthor(String text);
+	List<Article> findByAuthor(String text);
 
 }

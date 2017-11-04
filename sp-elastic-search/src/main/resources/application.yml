@@ -1,0 +1,25 @@
+spring:
+  thymeleaf:
+    cache: false
+  data:
+    mongodb:
+      uri: mongodb://10.112.44.232:27017/OrionScion
+    rest:
+      base-path: /api
+    elasticsearch:
+      properties:
+        index.max_result_window: 500000
+        
+elasticsearch:
+  host: localhost
+  clustername: os-cluster
+  port: 9300
+        
+        
+  
+     
+        
+
+        
+         
+        
