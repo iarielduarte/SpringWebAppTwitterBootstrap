@@ -64,7 +64,14 @@ public class SearchResource {
         Pageable pageRequest = new PageRequest(realPage, size);
 		Map<String, Object> map = Maps.newHashMap();
 		List<Article> articlesList = searchQueryBuilder.getByOutlet(outlet, pageRequest);
-		SearchResultArticle sra = new SearchResultArticle(articlesList.size(),size,realPage);
+		SearchResultArticle sra = new SearchResultArticle();
+		sra.setPage(realPage);
+		sra.setSize(articlesList.size());
+		sra.setTotal(size);
+		Map<String, Long> buckets = searchQueryBuilder.getStatusAggregation(outlet);
+		buckets.forEach((k, v) -> {
+            System.out.println(k + " = " + v);
+        });
 		map.put("SearchResultArticle", sra);
 		map.put("Articles", articlesList);
 		
