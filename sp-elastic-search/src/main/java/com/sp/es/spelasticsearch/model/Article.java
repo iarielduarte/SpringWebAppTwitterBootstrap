@@ -30,7 +30,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 @Document(collection = "Article")
-@org.springframework.data.elasticsearch.annotations.Document(indexName="articles", type="articles")
+@org.springframework.data.elasticsearch.annotations.Document(indexName="orionscion", type="Article")
 public class Article {
 
 	@Id

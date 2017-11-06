@@ -63,8 +63,8 @@ public class SearchQueryBuilder {
 						);
 		
 		NativeSearchQuery build = new NativeSearchQueryBuilder()
-				.withIndices("articles")
-				.withTypes("articles")
+				.withIndices("orionscion")
+				.withTypes("Article")
 				.withQuery(query)
 				.addAggregation(AggregationBuilders.terms("status").field("humanFiltered.status"))
 				.build();
