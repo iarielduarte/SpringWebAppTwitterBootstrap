@@ -48,6 +48,7 @@ public class Article {
 //    private DateTime embargoLiftedDT;
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 //    private DateTime foundDT;
+    @Field(type = FieldType.Nested)
     private List<HumanFiltered> humanFiltered;
     private String imageServiceLink;
     private String mediaGroup;

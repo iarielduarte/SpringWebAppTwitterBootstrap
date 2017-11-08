@@ -51,6 +51,29 @@ public class SearchResource {
 		return searchQueryBuilder.getByText(text);
 	}
 	
+	@GetMapping(value="/filter/{filter}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public @ResponseBody ResponseEntity<?> getArticlesByFilter(@PathVariable final String filter, Pageable p){
+		int realPage = 0;
+		if (p.getPageNumber() > 0) {
+            realPage = p.getPageNumber() - 1;
+        }
+        int size = 1;
+        if (p.getPageSize() > 0) {
+        	size = p.getPageSize();
+        }
+        Pageable pageRequest = new PageRequest(realPage, size);
+		Map<String, Object> map = Maps.newHashMap();
+		List<Article> articlesList = searchQueryBuilder.searchByFilter(filter, pageRequest);
+		SearchResultArticle sra = new SearchResultArticle();
+		sra.setPage(realPage);
+		sra.setSize(articlesList.size());
+		sra.setTotal(size);
+		map.put("SearchResultArticle", sra);
+		map.put("Articles", articlesList);
+		
+		return new ResponseEntity<>(map, OK);
+	}
+	
 	@GetMapping(value="/outlet/{outlet}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody ResponseEntity<?> getArticlesByOutlet(@PathVariable final String outlet, Pageable p){
 		int realPage = 0;

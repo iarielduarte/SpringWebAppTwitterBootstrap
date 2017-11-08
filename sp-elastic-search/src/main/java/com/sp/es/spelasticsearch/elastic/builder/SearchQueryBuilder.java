@@ -37,25 +37,58 @@ public class SearchQueryBuilder {
 	@Autowired
 	private ElasticsearchTemplate elasticsearchTemplate;
 	
-	public List<Article> getByOutlet(String outlet, Pageable pageable) {
+	public List<Article> searchByFilter(String filter, Pageable pageable) {
 		QueryBuilder query = QueryBuilders.boolQuery()
 				.should(
-						QueryBuilders.queryStringQuery(outlet)
+						QueryBuilders.queryStringQuery(filter)
 						.lenient(true)
-						.field("publicationName"));
+						.field("humanFiltered.status")//status
+						.field("humanFiltered.dataGroupId")//datagroups
+						.field("humanFiltered.category")//categories
+						.field("bestCountry") //countries
+						.field("mediaId") //mediatype
+						.field("publicationName")//outlet
+						.field("humanFiltered.routingOption"));
+						
 		
 		NativeSearchQuery build = new NativeSearchQueryBuilder()
+				.withIndices("orionscion")
+				.withTypes("Article")
 				.withPageable(pageable)
 				.withQuery(query)
+				.addAggregation(AggregationBuilders.terms("status").field("humanFiltered.status"))
+				.addAggregation(AggregationBuilders.terms("dataGroups").field("humanFiltered.dataGroupId"))
+				.addAggregation(AggregationBuilders.terms("categories").field("humanFiltered.category"))
+				.addAggregation(AggregationBuilders.terms("mediaTypes").field("humanFiltered.mediaId"))
+				.addAggregation(AggregationBuilders.terms("publicationName").field("publicationName"))
 				.build();
 		
 		List<Article> articles =  elasticsearchTemplate.queryForList(build, Article.class);
 		
+		Aggregations aggregations = elasticsearchTemplate.query(build, new ResultsExtractor<Aggregations>() {
+			@Override
+			  public Aggregations extract(SearchResponse response) {
+			    return response.getAggregations();
+			  }
+			});
+		
+		Map<String, Long> buckets = Maps.newHashMap();
+		Terms statusTerms = (Terms) aggregations.get("status");
+		statusTerms.getBuckets().forEach(
+			      bucket -> {
+			    	  System.out.println(String.format("Key: %s, Doc count: %d", bucket.getKey(), bucket.getDocCount()));
+			    	  buckets.put(bucket.getKey().toString(), bucket.getDocCount());
+			        
+			      });
+		
 		return articles;
 	}
+	
+	
 		
 	public Map<String, Long> getStatusAggregation(String outlet){
 		QueryBuilder query = QueryBuilders.boolQuery()
+				
 				.should(
 						QueryBuilders.queryStringQuery(outlet)
 						.lenient(true)
@@ -75,7 +108,7 @@ public class SearchQueryBuilder {
 			    return response.getAggregations();
 			  }
 			});
-		Map<String, Long> buckets = Maps.newHashMap();;
+		Map<String, Long> buckets = Maps.newHashMap();
 		Terms statusTerms = (Terms) aggregations.get("status");
 		statusTerms.getBuckets().forEach(
 			      bucket -> {
@@ -86,6 +119,24 @@ public class SearchQueryBuilder {
 		return buckets;
 	}
 	
+	public List<Article> getByOutlet(String outlet, Pageable pageable) {
+		QueryBuilder query = QueryBuilders.boolQuery()
+				.should(
+						QueryBuilders.queryStringQuery(outlet)
+						.lenient(true)
+						.field("publicationName"));
+		
+		NativeSearchQuery build = new NativeSearchQueryBuilder()
+				.withPageable(pageable)
+				.withQuery(query)
+				.build();
+		
+		
+		
+		List<Article> articles =  elasticsearchTemplate.queryForList(build, Article.class);
+		
+		return articles;
+	}
 
 	public List<Article> getByText(String text) {
 		QueryBuilder query = QueryBuilders.boolQuery()
