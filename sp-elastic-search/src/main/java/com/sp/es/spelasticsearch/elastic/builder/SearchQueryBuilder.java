@@ -1,166 +1,118 @@
 package com.sp.es.spelasticsearch.elastic.builder;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
+import java.net.InetAddress;
 
+import javax.annotation.PostConstruct;
+
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.client.Client;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.common.settings.Settings;
+import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.Aggregation;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.nestedQuery;
+import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
-import org.elasticsearch.search.aggregations.bucket.filters.Filters;
-import org.elasticsearch.search.aggregations.bucket.filters.Filters.Bucket;
-import org.elasticsearch.search.aggregations.bucket.filters.InternalFilters;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.sum.Sum;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.ResultsExtractor;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.google.common.collect.Maps;
-import com.sp.es.spelasticsearch.elastic.utils.SearchResultArticle;
-import com.sp.es.spelasticsearch.model.Article;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sp.es.spelasticsearch.elastic.model.ArticleElastic;
 
-
-
-@Component
+//@Component
 public class SearchQueryBuilder {
 	
 	@Autowired
-	private ElasticsearchTemplate elasticsearchTemplate;
+	ObjectMapper objectMapper;
 	
-	public List<Article> searchByFilter(String filter, Pageable pageable) {
-		QueryBuilder query = QueryBuilders.boolQuery()
-				.should(
-						QueryBuilders.queryStringQuery(filter)
-						.lenient(true)
-						.field("humanFiltered.status")//status
-						.field("humanFiltered.dataGroupId")//datagroups
-						.field("humanFiltered.category")//categories
-						.field("bestCountry") //countries
-						.field("mediaId") //mediatype
-						.field("publicationName")//outlet
-						.field("humanFiltered.routingOption"));
-						
-		
-		NativeSearchQuery build = new NativeSearchQueryBuilder()
-				.withIndices("orionscion")
-				.withTypes("Article")
-				.withPageable(pageable)
-				.withQuery(query)
-				.addAggregation(AggregationBuilders.terms("status").field("humanFiltered.status"))
-				.addAggregation(AggregationBuilders.terms("dataGroups").field("humanFiltered.dataGroupId"))
-				.addAggregation(AggregationBuilders.terms("categories").field("humanFiltered.category"))
-				.addAggregation(AggregationBuilders.terms("mediaTypes").field("humanFiltered.mediaId"))
-				.addAggregation(AggregationBuilders.terms("publicationName").field("publicationName"))
-				.build();
-		
-		List<Article> articles =  elasticsearchTemplate.queryForList(build, Article.class);
-		
-		Aggregations aggregations = elasticsearchTemplate.query(build, new ResultsExtractor<Aggregations>() {
-			@Override
-			  public Aggregations extract(SearchResponse response) {
-			    return response.getAggregations();
-			  }
-			});
-		
-		Map<String, Long> buckets = Maps.newHashMap();
-		Terms statusTerms = (Terms) aggregations.get("status");
-		statusTerms.getBuckets().forEach(
-			      bucket -> {
-			    	  System.out.println(String.format("Key: %s, Doc count: %d", bucket.getKey(), bucket.getDocCount()));
-			    	  buckets.put(bucket.getKey().toString(), bucket.getDocCount());
-			        
-			      });
-		
-		return articles;
+	@Autowired
+	Client elasticSearchClient;
+	
+
+	@Value("${elasticsearch.indexname}")
+	private String EsIndexName;
+
+	@Value("${elasticsearch.type}")
+	private String EsType;
+
+	//@PostConstruct
+	public void loadAll() throws Exception {
+		searchByOutlet(elasticSearchClient);
 	}
 	
+		
 	
-		
-	public Map<String, Long> getStatusAggregation(String outlet){
-		QueryBuilder query = QueryBuilders.boolQuery()
-				
-				.should(
-						QueryBuilders.queryStringQuery(outlet)
+	private void searchByOutlet(Client client) {
+
+		QueryBuilder query = boolQuery()
+				.should(queryStringQuery("Twitter")
 						.lenient(true)
-						.field("publicationName")
-						);
-		
-		NativeSearchQuery build = new NativeSearchQueryBuilder()
-				.withIndices("orionscion")
-				.withTypes("Article")
-				.withQuery(query)
-				.addAggregation(AggregationBuilders.terms("status").field("humanFiltered.status"))
-				.build();
-		
-		Aggregations aggregations = elasticsearchTemplate.query(build, new ResultsExtractor<Aggregations>() {
-			@Override
-			  public Aggregations extract(SearchResponse response) {
-			    return response.getAggregations();
-			  }
-			});
-		Map<String, Long> buckets = Maps.newHashMap();
-		Terms statusTerms = (Terms) aggregations.get("status");
-		statusTerms.getBuckets().forEach(
-			      bucket -> {
-			    	  System.out.println(String.format("Key: %s, Doc count: %d", bucket.getKey(), bucket.getDocCount()));
-			    	  buckets.put(bucket.getKey().toString(), bucket.getDocCount());
-			        
-			      });
-		return buckets;
-	}
-	
-	public List<Article> getByOutlet(String outlet, Pageable pageable) {
-		QueryBuilder query = QueryBuilders.boolQuery()
-				.should(
-						QueryBuilders.queryStringQuery(outlet)
-						.lenient(true)
-						.field("publicationName"));
-		
-		NativeSearchQuery build = new NativeSearchQueryBuilder()
-				.withPageable(pageable)
-				.withQuery(query)
-				.build();
-		
-		
-		
-		List<Article> articles =  elasticsearchTemplate.queryForList(build, Article.class);
-		
-		return articles;
+						.field("publicationName")// outlet
+		);
+
+		SearchResponse searchResponse = client.prepareSearch(EsIndexName).setTypes(EsType).setQuery(query).execute()
+				.actionGet();
+
+		SearchHits hits = searchResponse.getHits();
+		System.out.println(hits.getAt(0).getSource().get("body"));
+		// hits.getTotalHits()
+		// hits.getAt(0).getSource().get("mediaType")
 	}
 
-	public List<Article> getByText(String text) {
-		QueryBuilder query = QueryBuilders.boolQuery()
-				.should(
-						QueryBuilders.queryStringQuery(text)
-						.lenient(true)
-						.field("title")
-						.field("author")
-						.field("vtKey")
-				).should(QueryBuilders.queryStringQuery("*"+text+"*")
-						.lenient(true)
-						.field("title")
-						.field("author")
-				);
+	private void search(Client client) throws Exception{
 		
-		NativeSearchQuery build = new NativeSearchQueryBuilder()
-				.withQuery(query)
-				.build();
+		QueryBuilder nestedQueries = boolQuery()
+				.must(termQuery("humanFiltered.routingOption.keyword","HumanMonitoring"))
+				.must(termQuery("humanFiltered.status.keyword","published"))
+				.must(termQuery("humanFiltered.dataGroupId","13980922"))
+				.must(termQuery("humanFiltered.category.keyword","PabloCat4192017"));
 		
-		List<Article> articles =  elasticsearchTemplate.queryForList(build, Article.class);
+		QueryBuilder finalQuery = boolQuery()
+				.must(termQuery("publicationNameLowercase.keyword","associated press"))
+				.must(termQuery("bestCountry",6252001))
+				.must(termQuery("cpreMediaType",119000))
+				.must(termQuery("cpreMediaType",119000))
+				.must(nestedQuery("humanFiltered", nestedQueries, ScoreMode.None));
 		
-		return articles;
+		 
+		
+		SearchResponse searchResponse = client.prepareSearch(EsIndexName).setTypes(EsType).setQuery(finalQuery)
+				.addAggregation(AggregationBuilders.terms("media").field("cpreMediaType"))
+				.addAggregation(AggregationBuilders.terms("region").field("bestCountry"))
+				.addAggregation(AggregationBuilders.terms("outlet").field("publicationNameLowercase.keyword"))
+				//Nested Aggs
+				.addAggregation(AggregationBuilders.nested("humanFilteredAggs", "humanFiltered")
+						.subAggregation(AggregationBuilders.terms("status").field("humanFiltered.status.keyword"))
+						.subAggregation(AggregationBuilders.terms("datagroup").field("humanFiltered.dataGroupId.keyword"))
+						.subAggregation(AggregationBuilders.terms("category").field("humanFiltered.category.keyword")))
+				.execute().actionGet();
+
+		SearchHits hits = searchResponse.getHits();
+		System.out.println(hits.getAt(0).getSource().get("body"));
+		try {
+			ArticleElastic article = objectMapper.readValue(hits.getAt(0).getSourceAsString(), ArticleElastic.class);
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// hits.getTotalHits()
+		// hits.getAt(0).getSource().get("mediaType")
 	}
-	
-	
 
 }

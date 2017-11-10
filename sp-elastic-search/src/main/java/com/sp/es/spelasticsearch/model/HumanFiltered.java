@@ -64,14 +64,14 @@ public class HumanFiltered {
 	@Field("publishedUser")
 	private String publishedUser;
 	
-//	@Field("publishedDate")
-//	private DateTime publishedDate;
+	@Field("publishedDate")
+	private DateTime publishedDate;
 	
 	@Field("rejectedUser")
 	private String rejectedUser;
 	
-//	@Field("rejectedDate")
-//	private DateTime rejectedDate;
+	@Field("rejectedDate")
+	private DateTime rejectedDate;
 	
 	@Field("showCreatedNotification")
 	private boolean showCreatedNotification;

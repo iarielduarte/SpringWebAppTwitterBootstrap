@@ -11,8 +11,10 @@ spring:
         index.max_result_window: 500000
         
 elasticsearch:
-  host: localhost
-  clustername: os-cluster
+  indexname: orionscion
+  type: Article
+  host: 10.112.32.252
+  clustername: elasticsearch
   port: 9300
         
         

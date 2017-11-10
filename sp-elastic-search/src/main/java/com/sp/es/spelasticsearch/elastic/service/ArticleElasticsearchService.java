@@ -1,14 +1,19 @@
 package com.sp.es.spelasticsearch.elastic.service;
 
-import org.springframework.data.domain.Page;
+import java.io.IOException;
+
+import org.elasticsearch.action.search.SearchResponse;
 import org.springframework.data.domain.Pageable;
 
-import com.sp.es.spelasticsearch.model.Article;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.sp.es.spelasticsearch.elastic.model.ArticlesElasticResponse;
+import com.sp.es.spelasticsearch.model.FilterContract;
 
 public interface ArticleElasticsearchService {
 	
-	Page<Article> findByPublicationName(String publicationName, Pageable pageable);
+	ArticlesElasticResponse findByStatus(FilterContract filterContract, Pageable page) throws JsonParseException, JsonMappingException, IOException;
 	
-	Article findOne(String id);
+	SearchResponse searchByOutlet(String outlet);
 
 }
