@@ -30,7 +30,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sp.es.spelasticsearch.elastic.model.ArticleElastic;
+import com.sp.es.spelasticsearch.elastic.response.ArticleElastic;
 
 //@Component
 public class SearchQueryBuilder {

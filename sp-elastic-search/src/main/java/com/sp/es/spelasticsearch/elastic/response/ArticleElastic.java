@@ -1,4 +1,4 @@
-package com.sp.es.spelasticsearch.elastic.model;
+package com.sp.es.spelasticsearch.elastic.response;
 
 import java.util.List;
 

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.sp.es.spelasticsearch.elastic.model.ArticlesElasticResponse;
+import com.sp.es.spelasticsearch.elastic.response.ArticlesElasticResponse;
 import com.sp.es.spelasticsearch.elastic.service.ArticleElasticsearchService;
 import com.sp.es.spelasticsearch.model.FilterContract;
 
@@ -30,7 +30,8 @@ public class SearchResourceController {
 	@Autowired
 	ArticleElasticsearchService elasticService;
 	
-	@RequestMapping(value = "/elasticSearch", method = RequestMethod.POST, produces = "application/json")
+	@RequestMapping(value = "/all", method = RequestMethod.POST, produces = "application/json")
+	
     public @ResponseBody ArticlesElasticResponse get(@RequestBody FilterContract filterContract,
     		Pageable p) throws JsonParseException, JsonMappingException, IOException {
 		int realPage = 0;
@@ -41,9 +42,10 @@ public class SearchResourceController {
         if(p.getSort()!=null){
             sort = p.getSort();
         }
-        Pageable pageRequest = new PageRequest(realPage, 1, sort);
-		ArticlesElasticResponse articles = elasticService.findByStatus(filterContract,pageRequest);
+        Pageable pageRequest = new PageRequest(realPage, p.getPageSize(), sort);
+		ArticlesElasticResponse articles = elasticService.filteredSearch(filterContract,pageRequest);
 		return articles;
+    	
     }
 	
 	@GetMapping(value="/outlet/{outlet}", produces = MediaType.APPLICATION_JSON_VALUE)

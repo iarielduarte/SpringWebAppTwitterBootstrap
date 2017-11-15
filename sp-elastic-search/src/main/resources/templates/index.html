@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<title>os ~ pof</title>
+	<base href="/" th:href="@{__${baseURL}__}" />
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	
+	<link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/font-awesome/css/font-awesome.min.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/angular-ui-select/select.min.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/toastr/build/toastr.min.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/angular-ui-bootstrap-datetimepicker/datetimepicker.css}" />
+	<link rel="stylesheet" th:href="@{/webjars/ng-tags-input/ng-tags-input.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/styles.css}"  />
+	<link rel="stylesheet" th:href="@{/css/to-do.css}"  />
+	<link rel="stylesheet" th:href="@{/css/style-responsive.css}"  />
+	<link rel="stylesheet" th:href="@{/css/selectize.default.css}"  />
+	
+	
+</head>
+<body>
+<section id="container" ng-controller="IndexCtrl">
+<!--header start-->
+      <header class="header black-bg">
+             <div class="sidebar-toggle-box">
+                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+             </div>
+            <a href="" class="logo"><b>os ~ pof</b></a>
+       </header>
+      <!--header end-->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu">
+              	 <p class="centered">
+              	  	<a href="" class="centered">
+              	  		<img src="../static/img/ui-sam.png" th:src="@{/img/ui-sam.png}" class="img-circle" width="60"></img>
+              	  	</a>
+              	</p>
+             	 <h5 class="centered">Powered By Elasticsearch</h5>
+             	 <li class="mt">
+                      
+                  </li>
+             	 <li class="accordion">
+                      <a href="">
+                          <i class="fa fa-book"></i>
+                          <span>States</span>
+                      </a>
+                  </li>
+                  <div class="sub-panel">
+	                  <ul ng-repeat="st in aggStatus">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectStatus(st, selected)" checklist-model="status" checklist-value="st"></input>  
+                          		{{st.key}} <span class="badge bg-info">{{st.count.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+              	  <li class="accordion">
+                      <a href="">
+                          <i class="fa fa-tasks"></i>
+                          <span>Categories</span>
+                      </a>
+                  </li>
+                  <div class="sub-panel">
+	                  <ul ng-repeat="cat in aggCategories">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectCategory(cat, selected)"></input>  {{cat.key}} <span class="badge bg-info">{{cat.count.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+                 <li class="accordion">
+                      <a href="">
+                          <i class="fa fa-book"></i>
+                          <span>Customer</span>
+                      </a>
+                  </li>
+                  <div class="sub-panel">
+	                  <ul ng-repeat="group in aggGroups">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectCustomer(group, selected)"></input>  {{group.key}} <span class="badge bg-info">{{group.count.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+                  <li class="accordion">
+                      <a href="" >
+                          <i class="fa fa-desktop"></i>
+                          <span>Outlets</span>
+                      </a>
+                  </li>
+                  <div class="sub-panel">
+	                  <ul ng-repeat="outlet in aggOutlets">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectOutlet(outlet, selected)"></input>  {{outlet.key}} <span class="badge bg-info">{{outlet.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+                   <li class="accordion">
+                      <a href="">
+                          <i class="fa fa-dashboard"></i>
+                          <span>Regions</span>
+                      </a>
+                  </li>
+                   <div class="sub-panel">
+	                  <ul ng-repeat="region in aggRegions">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectRegion(region, selected)"></input>  {{region.key}} <span class="badge bg-info">{{region.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+                  <li class="accordion">
+                      <a href="" >
+                          <i class="fa fa-cogs"></i>
+                          <span>Media Types</span>
+                      </a>
+                  </li>
+                  <div class="sub-panel">
+	                  <ul ng-repeat="media in aggMedias">
+                          	<li>
+                          		<input type="checkbox" ng-click="selectMedia(media, selected)"></input>  {{media.key}} <span class="badge bg-info">{{media.count.doc_count}}</span>
+                         	</li>
+	                   </ul>
+                   </div>
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+	    <section class="wrapper">
+	    <h3><i class="fa fa-list-ul"></i> Articles Listing</h3>
+	    	 <div class="row mt">
+		    	 <div class="col-lg-12">
+		    	 <div class="content-panel">
+		    	 	<div class="row">
+		    	 		 <div class="col-md-4">
+                			<!--<i ng-show="hmCtrl.working" class="fa fa-spinner fa-pulse fa-spin fa-lg fa-fw"></i>-->
+                			<h4>Total Articles {{total}}</h4>
+            			</div>
+            			 <div class="col-md-4">
+                			<div class="pull-right" style="padding: 5px;">
+	                    		<label for="selectNumberResults">Items per page:</label>
+	                    		<select class="btn btn-default dropdown-toggle" ng-model="selectedOption" ng-change="changeSizePage()" ng-options="option.name for option in sizes"></select>
+	                       	</div>
+            			</div>
+            			 <div class="col-md-4">
+                			<ul class="pager pull-right" style="margin: -2px; padding: 5px;">
+		                    	<li><a href="" ng-show="currentPage!=1" ng-click="previousPage()"><i class="fa fa-angle-left"></i></a></li>
+		                    	<li>Page {{currentPage}} of {{totalPages}}</li>
+		                    	<li><a href="" ng-show="currentPage != totalPages" ng-click="nextPage()"><i class="fa fa-angle-right"></i></a></li>
+	                		</ul>
+            			</div>
+	                    
+                	</div>
+                          <section id="unseen">
+                            <table class="table table-bordered table-striped table-condensed">
+                              <thead>
+                              <tr>
+                                  <th>Headline</th>
+                                  <th>Outlet</th>
+                                  <th>Date</th>
+                                  <th>Author</th>
+                                  <th>Media Types</th>
+                              </tr>
+                              </thead>
+                              <tbody>
+                              <tr ng-repeat="article in articles">
+                                  <td>{{article.title}}</td>
+                                  <td>{{article.publicationName}}</td>
+                                  <td>{{article.publishedOnDT | date:'mediumDate' : 'UTC'}}</td>
+                                  <td>{{article.author}}</td>
+                                  <td>{{article.mediaType}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                         </section>
+                  </div><!-- /content-panel -->
+				</div>
+		    </div>
+		</section>
+	</section>
+	 <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              <small> &copy;2017 DIET Team. All Rights Reserved.</small>
+              <a href="" class="go-top">
+                  <i class="fa fa-angle-up"></i>
+              </a>
+          </div>
+      </footer>
+      <!--footer end-->
+</section>
+	
+	
+	<script type="text/javascript" th:src="@{/webjars/angularjs/angular.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-sanitize/angular-sanitize.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-animate/angular-animate.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-ui-router/release/angular-ui-router.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/jquery/jquery.min.js}"></script>
+
+	<script type="text/javascript" th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-ui-bootstrap/ui-bootstrap.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-ui-bootstrap/ui-bootstrap-tpls.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/bootbox/bootbox.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/toastr/build/toastr.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-ui-select/select.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/angular-ui-bootstrap-datetimepicker/datetimepicker.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/webjars/ng-tags-input/ng-tags-input.min.js}"></script>
+
+	<script type="text/javascript" th:src="@{/webjars/URI.js/URI.min.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/js/app.js}"></script>
+	
+	<script type="text/javascript" th:src="@{/js/services.js}"></script> 
+	
+ 	<script type="text/javascript" th:src="@{/js/controllers.js}"></script> 
+ 	
+ 	<script type="text/javascript" th:src="@{/js/tasks.js}"></script> 
+ 
+ 	<script type="text/javascript" th:src="@{/js/common-scripts.js}"></script>
+ 	
+ 	<script type="text/javascript" th:src="@{/js/checklist-model.js}"></script>
+ 	
+ 	<script type="text/javascript" th:src="@{/js/lodash.js}"></script>  
+ 
+ 	
+	
+</body>
+</html>
